@@ -13,6 +13,7 @@
  */
 namespace Workerman;
 ini_set('display_errors', 'on');
+error_reporting(E_ALL);
 
 use \Workerman\Events\Libevent;
 use \Workerman\Events\Select;

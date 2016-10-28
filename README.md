@@ -1,4 +1,4 @@
-GatewayWorker windows 版本 (版本2.0.3)
+GatewayWorker windows 版本
 =================
 
 GatewayWorker基于[Workerman](https://github.com/walkor/Workerman)开发的一个项目框架，用于快速开发长连接应用，例如app推送服务端、即时IM服务端、游戏服务端、物联网、智能家居等等。
@@ -17,7 +17,7 @@ Linux 版本GatewayWorker 在这里 https://github.com/walkor/GatewayWorker
 
 Applications\YourApp测试方法
 ======
-使用telnet命令测试（不要使用windows再带的telnet）
+使用telnet命令测试（不要使用windows自带的telnet）
 ```shell
  telnet 127.0.0.1 8282
 Trying 127.0.0.1...

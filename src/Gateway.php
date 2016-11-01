@@ -38,7 +38,7 @@ class Gateway extends Worker
      *
      * @var string
      */
-    const VERSION = '2.0.7';
+    const VERSION = '3.0.0';
 
     /**
      * 本机 IP
@@ -53,7 +53,7 @@ class Gateway extends Worker
      *
      * @var string
      */
-    public $lanPort = '127.0.0.1';
+    public $lanPort = 0;
 
     /**
      * gateway 内部通讯起始端口，每个 gateway 实例应该都不同，步长1000
@@ -229,7 +229,7 @@ class Gateway extends Worker
     public function __construct($socket_name, $context_option = array())
     {
         parent::__construct($socket_name, $context_option);
-        list(, , $this->_gatewayPort) = explode(':', $socket_name);
+		$this->_gatewayPort = substr(strrchr($socket_name,':'),1);
         $this->router = array("\\GatewayWorker\\Gateway", 'routerBind');
 
         $backrace                = debug_backtrace();

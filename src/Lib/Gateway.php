@@ -368,8 +368,8 @@ class Gateway
                 $receive_buffer_array[$socket_id] = '';
             }
         }
-        // 超时1秒
-        $timeout    = 1;
+        // 超时5秒
+        $timeout    = 5;
         $time_start = microtime(true);
         // 批量接收请求
         while (count($client_array) > 0) {
@@ -562,7 +562,7 @@ class Gateway
             }
             foreach ($all_addresses as $address) {
                 $gateway_data['ext_data'] = isset($address_connection_array[$address]) ?
-                    json_encode(array('group'=> $group, 'exclude'=> array_values($address_connection_array[$address]))) :
+                    json_encode(array('group'=> $group, 'exclude'=> $address_connection_array[$address])) :
                     $default_ext_data_buffer;
                 self::sendToGateway($address, $gateway_data);
             }
@@ -686,7 +686,7 @@ class Gateway
             throw new Exception("can not connect to tcp://$address $errmsg");
         }
         if (strlen($buffer) === stream_socket_sendto($client, $buffer)) {
-            $timeout = 1;
+            $timeout = 5;
             // 阻塞读
             stream_set_blocking($client, 1);
             // 1秒超时
@@ -846,7 +846,7 @@ class Gateway
                 throw new Exception('Can not connect to tcp://' . self::$registerAddress . ' ' . $errmsg);
             }
             fwrite($client, '{"event":"worker_connect","secret_key":"' . self::$secretKey . '"}' . "\n");
-            stream_set_timeout($client, 1);
+            stream_set_timeout($client, 5);
             $ret = fgets($client, 655350);
             if (!$ret || !$data = json_decode(trim($ret), true)) {
                 throw new Exception('getAllGatewayAddressesFromRegister fail. tcp://' .

@@ -7,27 +7,11 @@ GatewayWorker使用经典的Gateway和Worker进程模型。Gateway进程负责�
 
 GatewayWorker提供非常方便的API，可以全局广播数据、可以向某个群体广播数据、也可以向某个特定客户端推送数据。配合Workerman的定时器，也可以定时推送数据。
 
-GatewayWorker Linux 版本
-======================
-Linux 版本GatewayWorker 在这里 https://github.com/walkor/GatewayWorker
+下载安装
+=====
+本仓库只是GatewayWorker的核心仓库，
+完整的版本[点击这里下载](http://www.workerman.net/download/GatewayWorker-for-win.zip)
 
-启动
-=======
-双击start_for_win.bat
-
-Applications\YourApp测试方法
-======
-使用telnet命令测试（不要使用windows自带的telnet）
-```shell
- telnet 127.0.0.1 8282
-Trying 127.0.0.1...
-Connected to 127.0.0.1.
-Escape character is '^]'.
-Hello 3
-3 login
-haha
-3 said haha
-```
 
 手册
 =======

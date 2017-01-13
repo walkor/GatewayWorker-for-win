@@ -67,9 +67,17 @@ class BusinessWorker extends Worker
     
     /**
      * 秘钥
+     *
      * @var string
      */
     public $secretKey = '';
+
+    /**
+     * businessWorker进程将消息转发给gateway进程的发送缓冲区大小
+     *
+     * @var int
+     */
+    public $sendToGatewayBufferSize = 10240000;
 
     /**
      * 保存用户设置的 worker 启动回调
@@ -233,7 +241,7 @@ class BusinessWorker extends Worker
     {
         // 防止进程立刻退出
         $worker->reloadable = false;
-        // 延迟 0.01 秒退出，避免 BusinessWorker 瞬间全部退出导致没有可用的 BusinessWorker 进程
+        // 延迟 0.05 秒退出，避免 BusinessWorker 瞬间全部退出导致没有可用的 BusinessWorker 进程
         Timer::add(0.05, array('Workerman\Worker', 'stopAll'));
         // 执行用户定义的 onWorkerReload 回调
         if ($this->_onWorkerReload) {
@@ -409,12 +417,13 @@ class BusinessWorker extends Worker
     public function tryToConnectGateway($addr)
     {
         if (!isset($this->gatewayConnections[$addr]) && !isset($this->_connectingGatewayAddresses[$addr]) && isset($this->_gatewayAddresses[$addr])) {
-            $gateway_connection                = new AsyncTcpConnection("GatewayProtocol://$addr");
-            $gateway_connection->remoteAddress = $addr;
-            $gateway_connection->onConnect     = array($this, 'onConnectGateway');
-            $gateway_connection->onMessage     = array($this, 'onGatewayMessage');
-            $gateway_connection->onClose       = array($this, 'onGatewayClose');
-            $gateway_connection->onError       = array($this, 'onGatewayError');
+            $gateway_connection                    = new AsyncTcpConnection("GatewayProtocol://$addr");
+            $gateway_connection->remoteAddress     = $addr;
+            $gateway_connection->onConnect         = array($this, 'onConnectGateway');
+            $gateway_connection->onMessage         = array($this, 'onGatewayMessage');
+            $gateway_connection->onClose           = array($this, 'onGatewayClose');
+            $gateway_connection->onError           = array($this, 'onGatewayError');
+            $gateway_connection->maxSendBufferSize = $this->sendToGatewayBufferSize;
             if (TcpConnection::$defaultMaxSendBufferSize == $gateway_connection->maxSendBufferSize) {
                 $gateway_connection->maxSendBufferSize = 50 * 1024 * 1024;
             }

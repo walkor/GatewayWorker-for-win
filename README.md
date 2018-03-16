@@ -1,3 +1,6 @@
+## 此项目不再维护
+**https://github.com/walkor/GatewayWorker 已经支持windows，此项目不再维护**
+
 GatewayWorker windows 版本
 =================
 
